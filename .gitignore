@@ -2,3 +2,4 @@
 pkg
 test_project
 .rake_tasks
+*.gem
