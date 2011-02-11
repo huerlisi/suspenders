@@ -7,12 +7,22 @@ require File.expand_path(File.dirname(__FILE__) + "/helpers")
 template_root = File.expand_path(File.join(File.dirname(__FILE__)))
 source_paths << File.join(template_root, "files")
 
+def origin
+  "git://github.com/huerlisi/suspenders.git"
+end
+
 # Cleanup
+say "Getting rid of files we don't use"
+
+remove_file "public/index.html"
+remove_file "public/images/rails.png"
+
+# Textile readme
+say "Use Textile README"
 remove_file "README"
 template "README.textile.erb", "README.textile"
 
-remove_file "public/index.html"
-
+if false
 copy_file "Gemfile"
 run "bundle install"
 
@@ -45,9 +55,6 @@ copy_file "config/initializers/formtastic.rb"
 # Landing page
 # Generate welcome and overview controllers, add default route.
 
-# Layout
-remove_file "public/images/rails.png"
-
 # Initialize CanCan
 # Migrations
 # Models, Ability
@@ -55,3 +62,4 @@ remove_file "public/images/rails.png"
 # Initialize Tagging
 #generate "acts_as_taggable_on:migration"
 #rake "db:migrate"
+end
