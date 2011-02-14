@@ -53,6 +53,9 @@ inject_into_class "config/application.rb", "Application", generators_config
 # Style
 say "Create syncable layout"
 trout "app/views/layouts/application.html.haml"
+generate "styleyt:theme"
+trout "config/compass.rb"
+trout "config/initializers/compass.rb"
 
 # Authorization
 say "Setup authentication"
@@ -73,8 +76,8 @@ trout "config/navigation/user_navigation.rb"
 say "Setup testing"
 generate "rspec:install"
 
-# Formtastic
-say "Setup form handling"
+# Form framework
+say "Setup form framework"
 generate "formtastic:install"
 trout "config/initializers/formtastic.rb"
 
@@ -92,9 +95,6 @@ trout "app/controllers/welcome_controller.rb"
 trout "app/views/welcome/home.html.haml"
 
       
-# Styling
-#generate "styleyt:theme"
-
 # Application settings
 #template "config/application.rb"
 
