@@ -130,8 +130,12 @@ with_git "Setup database config" do
   trout "config/database.yml.example"
 end
 
-
-
+# Deployment
+with_git "Setup capistrano" do
+  trout "config/deploy.rb"
+  empty_directory "lib/recipes"
+  trout "lib/recipes/database.rb"
+end
 
 # Application settings
 #template "config/application.rb"
