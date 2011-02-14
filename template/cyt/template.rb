@@ -2,13 +2,14 @@
 # ==========
 # by CyT
 
-require File.expand_path(File.dirname(__FILE__) + "/helpers")
+require File.expand_path(File.dirname(__FILE__) + "/../helpers")
 
 template_root = File.expand_path(File.join(File.dirname(__FILE__)))
 source_paths << File.join(template_root, "files")
 
 def origin
-  "git://github.com/huerlisi/suspenders.git"
+#  "git://github.com/huerlisi/cyt-suspenders.git"
+  "~/src/github/huerlisi/startyt"
 end
 
 # Cleanup
@@ -23,26 +24,31 @@ remove_file "README"
 template "README.textile.erb", "README.textile"
 
 # Gemfile/Bundler
-say "Create Gemfile and run bundler"
+say "Create syncable Gemfile and run bundler"
 trout 'Gemfile'
-run "bundle install"
+#run "bundle install"
 
-if false
-copy_file "Gemfile"
-run "bundle install"
+# Gitignore
+say "Create syncable .gitignore"
+trout ".gitignore"
 
-copy_file ".gitignore"
+# Style
+say "Create syncable layout"
+trout "app/views/layouts/application.html.haml"
 
 # Authorization
 generate "devise:install"
 generate "devise", "User"
-copy_file "app/views/devise"
+#copy_file "app/views/devise"
 rake "db:migrate"
 
 # Navigation
-copy_file "config/initializers/simple_navigation.rb"
-copy_file "config/navigation"
+trout "config/initializers/simple_navigation.rb"
+trout "config/navigation"
 # copy overview renderer etc.
+
+
+if false
 
 # Styling
 generate "styleyt:theme"
