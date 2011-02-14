@@ -22,6 +22,11 @@ say "Use Textile README"
 remove_file "README"
 template "README.textile.erb", "README.textile"
 
+# Gemfile/Bundler
+say "Create Gemfile and run bundler"
+trout 'Gemfile'
+run "bundle install"
+
 if false
 copy_file "Gemfile"
 run "bundle install"
