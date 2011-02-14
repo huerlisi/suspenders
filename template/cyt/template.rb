@@ -63,8 +63,19 @@ generate "formtastic:install"
 trout "config/initializers/formtastic.rb"
 
 # Localization
+say "Setup german default locale"
 trout "config/initializers/german_dates.rb"
 
+# Landing page
+say "Setup landing page"
+route "get 'welcome/index'"
+route "get 'welcome/home'"
+route "root :to => 'welcome#index'"
+empty_directory "app/views/welcome"
+trout "app/controllers/welcome_controller.rb"
+trout "app/views/welcome/home.html.haml"
+
+      
 # Styling
 #generate "styleyt:theme"
 
