@@ -90,6 +90,7 @@ with_git "Setup authentication" do
   generate "devise:install"
   generate "devise", "User"
   #copy_file "app/views/devise"
+  trout_i18n "devise"
 end
 
 # Navigation
@@ -110,6 +111,7 @@ end
 with_git "Setup form framework" do
   generate "formtastic:install"
   trout "config/initializers/formtastic.rb"
+  trout_i18n "formtastic"
 end
 
 # Localization
