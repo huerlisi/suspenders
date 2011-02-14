@@ -85,12 +85,22 @@ with_git "Create syncable layout" do
   trout "config/initializers/compass.rb"
 end
 
-# Authorization
+# Authentication
 with_git "Setup authentication" do
   generate "devise:install"
   generate "devise", "User"
   #copy_file "app/views/devise"
   trout_i18n "devise"
+end
+
+# Authorization
+with_git "Setup authorization" do
+  trout "app/models/ability.rb"
+  trout "app/models/role.rb"
+  # migrations should probably be templates, not trouts
+  trout "db/migrate/20101215232205_create_roles.rb"
+  trout "db/migrate/20101215232318_users_have_and_belong_to_many_roles.rb"
+  trout_i18n "cancan"
 end
 
 # Navigation
