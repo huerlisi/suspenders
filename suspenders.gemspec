@@ -52,6 +52,7 @@ rush to build something amazing; don't use it if you like missing deadlines.
     template/files/time_formats.rb
     template/helpers.rb
     template/suspenders.rb
+    template/cyt.rb
     template/trout/Gemfile
     template/trout/public/javascripts/jquery-ui.js
     template/trout/public/javascripts/jquery.js
