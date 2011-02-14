@@ -82,7 +82,6 @@ with_git "Setup authentication" do
   generate "devise:install"
   generate "devise", "User"
   #copy_file "app/views/devise"
-  rake "db:migrate"
 end
 
 # Navigation
@@ -125,6 +124,11 @@ with_git "Setup landing page" do
   trout "app/views/welcome/home.html.haml"
 end
 
+# Database
+with_git "Setup database config" do
+  remove_file "config/database.yml"
+  trout "config/database.yml.example"
+end
 
 
 
