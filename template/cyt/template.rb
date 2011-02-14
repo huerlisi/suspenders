@@ -106,8 +106,13 @@ with_git "Setup form framework" do
 end
 
 # Localization
+default_locale="de-CH"
+fallback_locales="de"
 with_git "Setup german default locale" do
   trout "config/initializers/german_dates.rb"
+  
+  # TODO: This creates a .trout in the config/locales dir
+  run "cd config/locales; trout checkout --source-root=rails/locale #{default_locale}.yml https://github.com/svenfuchs/rails-i18n.git; cd ../.."
 end
 
 # Landing page
@@ -119,6 +124,10 @@ with_git "Setup landing page" do
   trout "app/controllers/welcome_controller.rb"
   trout "app/views/welcome/home.html.haml"
 end
+
+
+
+
 
 # Application settings
 #template "config/application.rb"
