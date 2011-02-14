@@ -19,8 +19,16 @@ def with_git(message, &block)
   run "git commit --all --message '#{quoted_message}'"
 end
 
+def trout_i18n(gem)
+  trout "config/locales/gem.#{default_locale}.yml"
+end
+
 say "Adapt for CyT"
 say "============="
+
+# Configuration
+default_locale="de-CH"
+fallback_locales="de"
 
 # Initialize git
 say "Initialize git"
@@ -105,8 +113,6 @@ with_git "Setup form framework" do
 end
 
 # Localization
-default_locale="de-CH"
-fallback_locales="de"
 with_git "Setup german default locale" do
   trout "config/initializers/german_dates.rb"
   
