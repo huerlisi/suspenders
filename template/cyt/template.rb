@@ -34,6 +34,22 @@ run "bundle install --local"
 say "Create syncable .gitignore"
 trout ".gitignore"
 
+# Templating
+say "Configure HAML for templates"
+remove_file "app/views/layouts/application.html.erb"
+
+# Generators
+say "Configure generators"
+generators_config = <<-RUBY
+    config.generators do |generate|
+      generate.stylesheets false
+      generate.test_framework :rspec
+      generate.template_engine :haml
+      generate.fixture_replacement :factory_girl
+    end
+RUBY
+inject_into_class "config/application.rb", "Application", generators_config
+
 # Style
 say "Create syncable layout"
 trout "app/views/layouts/application.html.haml"
