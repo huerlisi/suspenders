@@ -49,6 +49,7 @@ rake "db:migrate"
 say "Setup navigation"
 trout "config/initializers/simple_navigation.rb"
 empty_directory "config/navigation"
+trout "config/navigation/main_navigation.rb"
 trout "config/navigation/user_navigation.rb"
 # copy overview renderer etc.
 
