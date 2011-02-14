@@ -48,8 +48,12 @@ module Suspenders
     end
 
     def template
-      template_name = ENV['TEMPLATE_NAME'] || 'suspenders'
-      File.expand_path(File.dirname(__FILE__) + "/../template/#{template_name}.rb")
+      if template_name = ENV['TEMPLATE_NAME']
+        template = "#{template_name}/template"
+      else
+        template = "suspenders"
+      end
+      File.expand_path(File.dirname(__FILE__) + "/../template/#{template}.rb")
     end
   end
 end
