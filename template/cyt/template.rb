@@ -140,6 +140,7 @@ end
 
 # Deployment
 with_git "Setup capistrano" do
+  trout "Capfile"
   trout "config/deploy.rb"
   empty_directory "lib/recipes"
   trout "lib/recipes/database.rb"
