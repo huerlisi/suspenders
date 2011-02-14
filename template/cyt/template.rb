@@ -12,9 +12,11 @@ def origin
   "~/src/github/huerlisi/startyt"
 end
 
+say "Adapt for CyT"
+say "============="
+
 # Cleanup
 say "Getting rid of files we don't use"
-
 remove_file "public/index.html"
 remove_file "public/images/rails.png"
 
@@ -26,7 +28,7 @@ template "README.textile.erb", "README.textile"
 # Gemfile/Bundler
 say "Create syncable Gemfile and run bundler"
 trout 'Gemfile'
-#run "bundle install"
+run "bundle install --local"
 
 # Gitignore
 say "Create syncable .gitignore"
@@ -37,28 +39,33 @@ say "Create syncable layout"
 trout "app/views/layouts/application.html.haml"
 
 # Authorization
+say "Setup authentication"
 generate "devise:install"
 generate "devise", "User"
 #copy_file "app/views/devise"
 rake "db:migrate"
 
 # Navigation
+say "Setup navigation"
 trout "config/initializers/simple_navigation.rb"
-trout "config/navigation"
+empty_directory "config/navigation"
+trout "config/navigation/user_navigation.rb"
 # copy overview renderer etc.
 
-
-if false
-
-# Styling
-generate "styleyt:theme"
-
 # Testing
+say "Setup testing"
 generate "rspec:install"
 
 # Formtastic
+say "Setup form handling"
 generate "formtastic:install"
-copy_file "config/initializers/formtastic.rb"
+trout "config/initializers/formtastic.rb"
+
+# Localization
+trout "config/initializers/german_dates.rb"
+
+# Styling
+#generate "styleyt:theme"
 
 # Application settings
 #template "config/application.rb"
@@ -73,4 +80,3 @@ copy_file "config/initializers/formtastic.rb"
 # Initialize Tagging
 #generate "acts_as_taggable_on:migration"
 #rake "db:migrate"
-end
