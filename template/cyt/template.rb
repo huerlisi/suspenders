@@ -20,15 +20,18 @@ def with_git(message, &block)
 end
 
 def trout_i18n(gem)
-  trout "config/locales/gem.#{default_locale}.yml"
+  trout "config/locales/#{gem}.#{DEFAULT_LOCALE}.yml"
+  for locale in FALLBACK_LOCALES
+    trout "config/locales/#{gem}.#{locale}.yml"
+  end
 end
 
 say "Adapt for CyT"
 say "============="
 
 # Configuration
-default_locale="de-CH"
-fallback_locales="de"
+DEFAULT_LOCALE="de-CH"
+FALLBACK_LOCALES=["de"]
 
 # Initialize git
 say "Initialize git"
@@ -119,7 +122,7 @@ with_git "Setup german default locale" do
   trout "config/initializers/german_dates.rb"
   
   # TODO: This creates a .trout in the config/locales dir
-  run "cd config/locales; trout checkout --source-root=rails/locale #{default_locale}.yml https://github.com/svenfuchs/rails-i18n.git; cd ../.."
+  run "cd config/locales; trout checkout --source-root=rails/locale #{DEFAULT_LOCALE}.yml https://github.com/svenfuchs/rails-i18n.git; cd ../.."
 end
 
 # Landing page
