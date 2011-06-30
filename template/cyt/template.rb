@@ -62,11 +62,6 @@ with_git "Create syncable .gitignore" do
   trout ".gitignore"
 end
 
-# Templating
-with_git "Configure HAML for templates" do
-  remove_file "app/views/layouts/application.html.erb"
-end
-
 # Generators
 with_git "Configure generators" do
   generators_config = <<-RUBY
@@ -78,6 +73,23 @@ with_git "Configure generators" do
     end
   RUBY
   inject_into_class "config/application.rb", "Application", generators_config
+end
+
+# Templating
+with_git "Configure HAML for templates" do
+  remove_file "app/views/layouts/application.html.erb"
+end
+
+# Testing
+with_git "Setup testing" do
+  generate "rspec:install"
+end
+
+# Form framework
+with_git "Setup form framework" do
+  generate "formtastic:install"
+  trout "config/initializers/formtastic.rb"
+  trout_i18n "formtastic"
 end
 
 # Style
@@ -112,18 +124,6 @@ with_git "Setup navigation" do
   trout "config/navigation/main_navigation.rb"
   trout "config/navigation/user_navigation.rb"
   # copy overview renderer etc.
-end
-
-# Testing
-with_git "Setup testing" do
-  generate "rspec:install"
-end
-
-# Form framework
-with_git "Setup form framework" do
-  generate "formtastic:install"
-  trout "config/initializers/formtastic.rb"
-  trout_i18n "formtastic"
 end
 
 # Localization
