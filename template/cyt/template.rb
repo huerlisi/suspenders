@@ -84,17 +84,17 @@ with_git "Configure generators" do
 end
 
 # Templating
-with_git "Configure HAML for templates" do
+with_git "Select HAML for templates" do
   remove_file "app/views/layouts/application.html.erb"
 end
 
 # Testing
-with_git "Setup testing" do
+with_git "Select rspec for Testing" do
   generate "rspec:install"
 end
 
 # Form framework
-with_git "Setup form framework" do
+with_git "Select formtastic for Forms" do
   generate "formtastic:install"
   trout "config/initializers/formtastic.rb"
   trout_i18n "formtastic"
