@@ -4,8 +4,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = '1.3.5'
 
   s.name    = 'suspenders'
-  s.version = '0.2.2'
-  s.date    = '2010-12-15'
+  s.version = '0.2.5'
+  s.date    = '2011-06-01'
 
   s.summary     = "Generate a Rails app using thoughtbot's best practices."
   s.description = <<-HERE
@@ -16,7 +16,7 @@ rush to build something amazing; don't use it if you like missing deadlines.
 
   s.authors  = ["thoughtbot"]
   s.email    = 'support@thoughtbot.com'
-  s.homepage = 'http://github.com/thoughtbot/suspenders-gem'
+  s.homepage = 'http://github.com/thoughtbot/suspenders'
 
   s.executables = ["suspenders"]
   s.default_executable = 'suspenders'
@@ -24,7 +24,7 @@ rush to build something amazing; don't use it if you like missing deadlines.
   s.rdoc_options = ["--charset=UTF-8"]
   s.extra_rdoc_files = %w[README.md LICENSE]
 
-  s.add_dependency('rails', '>= 3.0.3')
+  s.add_dependency('rails', '3.0.9')
   s.add_dependency('bundler', '>= 1.0.7')
   s.add_dependency('trout', '>= 0.3.0')
 
@@ -54,8 +54,6 @@ rush to build something amazing; don't use it if you like missing deadlines.
     template/suspenders.rb
     template/cyt.rb
     template/trout/Gemfile
-    template/trout/public/javascripts/jquery-ui.js
-    template/trout/public/javascripts/jquery.js
     template/trout/public/javascripts/prefilled_input.js
   ]
   # = MANIFEST =

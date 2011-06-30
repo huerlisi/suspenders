@@ -8,7 +8,11 @@ template_root = File.expand_path(File.join(File.dirname(__FILE__)))
 source_paths << File.join(template_root, "files")
 
 def origin
-  "git://github.com/thoughtbot/suspenders.git"
+  if !ENV['REPO'].blank?
+    ENV['REPO']
+  else
+    "git://github.com/thoughtbot/suspenders.git"
+  end
 end
 
 say "Getting rid of files we don't use"
@@ -30,14 +34,11 @@ template "suspenders_layout.html.erb.erb",
          "app/views/layouts/application.html.erb",
          :force => true
 
+trout 'Gemfile'
+run "bundle install"
+
 say "Let's use jQuery"
-
-%w(jquery jquery-ui).each do |file|
-  trout "public/javascripts/#{file}.js"
-end
-
-download_file "https://github.com/rails/jquery-ujs/raw/master/src/rails.js",
-          "public/javascripts/rails.js"
+generate "jquery:install", "--ui"
 
 say "Pulling in some common javascripts"
 
@@ -48,9 +49,6 @@ say "Documentation"
 copy_file "README_FOR_SUSPENDERS", "doc/README_FOR_SUSPENDERS"
 
 say "Get ready for bundler... (this will take a while)"
-
-trout 'Gemfile'
-run "bundle install"
 
 say "Let's use MySQL"
 
@@ -73,8 +71,8 @@ action_mailer_host "production",  "#{app_name}.com"
 
 generate "rspec:install"
 generate "cucumber:install", "--rspec --capybara"
-generate "clearance"
-generate "clearance_features"
+generate "clearance:install"
+generate "clearance:features"
 
 create_file "public/stylesheets/sass/screen.scss"
 create_file "public/stylesheets/screen.css"
@@ -85,29 +83,39 @@ replace_in_file "spec/spec_helper.rb", "mock_with :rspec", "mock_with :mocha"
 
 inject_into_file "features/support/env.rb",
                  %{Capybara.save_and_open_page_path = 'tmp'\n} +
-                 %{Capybara.javascript_driver = :akephalos\n},
+                 %{Capybara.javascript_driver = :webkit\n},
                  :before => %{Capybara.default_selector = :css}
-replace_in_file "features/support/env.rb",
-                %r{require .*capybara_javascript_emulation.*},
-                ''
 
 rake "flutie:install"
 
 say "Ignore the right files"
 
 concat_file "suspenders_gitignore", ".gitignore"
-empty_directory_with_gitkeep "app/models"
-empty_directory_with_gitkeep "app/views/pages"
-empty_directory_with_gitkeep "db/migrate"
-empty_directory_with_gitkeep "log"
-empty_directory_with_gitkeep "public/images"
-empty_directory_with_gitkeep "spec/support"
+concat_file "cucumber_assertions_hack", "features/support/env.rb"
+
+["app/models",
+ "app/views/pages",
+ "db/migrate",
+ "log",
+ "public/images",
+ "spec/support",
+ "spec/lib",
+ "spec/models",
+ "spec/views",
+ "spec/controllers",
+ "spec/helpers",
+ "spec/support/matchers",
+ "spec/support/mixins",
+ "spec/support/shared_examples"].each do |dir|
+  empty_directory_with_gitkeep dir
+end
 
 say "Copying miscellaneous support files"
 
 copy_file "errors.rb", "config/initializers/errors.rb"
 copy_file "time_formats.rb", "config/initializers/time_formats.rb"
 copy_file "body_class_helper.rb", "app/helpers/body_class_helper.rb"
+
 
 say "Setting up a root route"
 

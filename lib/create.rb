@@ -5,26 +5,29 @@ require File.expand_path(File.dirname(__FILE__) + "/errors")
 
 module Suspenders
   class Create
-    attr_accessor :project_path
+    attr_accessor :project_path, :repo
 
-    def self.run!(project_path)
-      creator = self.new(project_path)
+    def self.run!(project_path, repo)
+      creator = self.new(project_path, repo)
       creator.create_project!
     end
 
-    def initialize(project_path)
+    def initialize(project_path, repo)
       self.project_path = project_path
       validate_project_path
       validate_project_name
+      self.repo = repo if repo
     end
 
     def create_project!
-      exec(<<-COMMAND)
-        rails new #{project_path} \
+      command = <<-COMMAND
+        rails #{rails_version} new #{project_path} \
           --template=#{template} \
           --skip-test-unit \
           --skip-prototype
       COMMAND
+      command = "REPO=#{repo} #{command}" if repo
+      exec(command)
     end
 
     private
@@ -54,6 +57,20 @@ module Suspenders
         template = "suspenders"
       end
       File.expand_path(File.dirname(__FILE__) + "/../template/#{template}.rb")
+    end
+
+    def gemfile
+      File.expand_path(File.dirname(__FILE__) + "/../template/trout/Gemfile")
+    end
+
+    def rails_version
+      gemfile_contents = File.read(gemfile)
+      gemfile_contents =~ /gem "rails", "(.*)"/
+      if $1.nil? || $1 == ''
+        ''
+      else
+        "_#{$1}_"
+      end
     end
   end
 end
