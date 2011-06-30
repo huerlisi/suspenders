@@ -85,7 +85,6 @@ with_git "Create syncable layout" do
   trout "app/views/layouts/application.html.haml"
   generate "styleyt:theme"
   trout "config/compass.rb"
-  trout "config/initializers/compass.rb"
 end
 
 # Authentication
