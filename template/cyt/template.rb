@@ -88,6 +88,12 @@ with_git "Select HAML for templates" do
   remove_file "app/views/layouts/application.html.erb"
 end
 
+# CSS framework
+with_git "Select Compass/SASS for Stylesheets" do
+  run "compass init rails . --syntax sass"
+  trout "config/compass.rb"
+end
+
 # Testing
 with_git "Select rspec for Testing" do
   generate "rspec:install"
@@ -104,7 +110,6 @@ end
 with_git_ask "Create syncable layout" do
   trout "app/views/layouts/application.html.haml"
   generate "styleyt:theme"
-  trout "config/compass.rb"
 end
 
 # Authentication
