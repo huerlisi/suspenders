@@ -19,6 +19,14 @@ def with_git(message, &block)
   run "git commit --quiet --all --message '#{quoted_message}'"
 end
 
+def with_git_ask(message, &block)
+  return  unless yes? "#{message}?"
+
+  with_git message do
+    yield
+  end
+end
+
 def trout_i18n(gem)
   trout "config/locales/#{gem}.#{DEFAULT_LOCALE}.yml"
   for locale in FALLBACK_LOCALES
@@ -37,7 +45,7 @@ FALLBACK_LOCALES=["de"]
 say "Initialize git"
 run "git init"
 run "git add ."
-run "git commit --message 'Import #{app_name}'"
+run "git commit --quiet --message 'Import #{app_name}'"
 
 # Cleanup
 with_git "Getting rid of files we don't use" do
@@ -93,14 +101,14 @@ with_git "Setup form framework" do
 end
 
 # Style
-with_git "Create syncable layout" do
+with_git_ask "Create syncable layout" do
   trout "app/views/layouts/application.html.haml"
   generate "styleyt:theme"
   trout "config/compass.rb"
 end
 
 # Authentication
-with_git "Setup authentication" do
+with_git_ask "Setup authentication" do
   generate "devise:install"
   generate "devise", "User"
   #copy_file "app/views/devise"
@@ -108,7 +116,7 @@ with_git "Setup authentication" do
 end
 
 # Authorization
-with_git "Setup authorization" do
+with_git_ask "Setup authorization" do
   trout "app/models/ability.rb"
   trout "app/models/role.rb"
   # migrations should probably be templates, not trouts
@@ -118,7 +126,7 @@ with_git "Setup authorization" do
 end
 
 # Navigation
-with_git "Setup navigation" do
+with_git_ask "Setup navigation" do
   trout "config/initializers/simple_navigation.rb"
   empty_directory "config/navigation"
   trout "config/navigation/main_navigation.rb"
@@ -127,7 +135,7 @@ with_git "Setup navigation" do
 end
 
 # Localization
-with_git "Setup german default locale" do
+with_git_ask "Setup german default locale" do
   trout "config/initializers/german_dates.rb"
   
   # TODO: This creates a .trout in the config/locales dir
@@ -135,7 +143,7 @@ with_git "Setup german default locale" do
 end
 
 # Landing page
-with_git "Setup landing page" do
+with_git_ask "Setup landing page" do
   route "get 'welcome/index'"
   route "get 'welcome/home'"
   route "root :to => 'welcome#index'"
@@ -145,13 +153,13 @@ with_git "Setup landing page" do
 end
 
 # Database
-with_git "Setup database config" do
+with_git_ask "Setup database config" do
   remove_file "config/database.yml"
   trout "config/database.yml.example"
 end
 
 # Deployment
-with_git "Setup capistrano" do
+with_git_ask "Setup capistrano" do
   trout "Capfile"
   trout "config/deploy.rb"
   empty_directory "lib/recipes"
@@ -159,7 +167,7 @@ with_git "Setup capistrano" do
 end
 
 # Locales
-with_git "Setup locales" do
+with_git_ask "Setup locales" do
   trout_i18n "validates_timeliness"
   trout_i18n "show_for"
 end
