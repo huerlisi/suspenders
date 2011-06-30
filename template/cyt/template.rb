@@ -54,7 +54,7 @@ end
 # Gemfile/Bundler
 with_git "Create syncable Gemfile and run bundler" do
   trout 'Gemfile'
-  run "bundle install --local"
+  run "bundle"
 end
 
 # Gitignore
