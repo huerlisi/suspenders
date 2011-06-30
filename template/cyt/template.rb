@@ -16,7 +16,7 @@ def with_git(message, &block)
   
   run "git add ."
   quoted_message = message.gsub("'", "'\"'\"'")
-  run "git commit --all --message '#{quoted_message}'"
+  run "git commit --quiet --all --message '#{quoted_message}'"
 end
 
 def trout_i18n(gem)
