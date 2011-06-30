@@ -160,7 +160,6 @@ end
 
 # Locales
 with_git "Setup locales" do
-  trout_i18n "cancan"
   trout_i18n "validates_timeliness"
   trout_i18n "show_for"
 end
